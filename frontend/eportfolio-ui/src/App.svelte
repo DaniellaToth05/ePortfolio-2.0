@@ -1,6 +1,7 @@
 <script>
   import Header from "./components/Header.svelte";
   import Hero from "./components/Hero.svelte";
+  import ActionSection from "./components/ActionSection.svelte";
 
   let portfolio = $state(null);
   let error = $state(null);
@@ -22,5 +23,6 @@
 
 <main>
   <Hero investments={portfolio?.investments ?? []} />
+  <ActionSection />
 </main>
 
