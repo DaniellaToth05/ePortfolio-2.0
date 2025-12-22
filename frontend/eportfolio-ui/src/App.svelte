@@ -1,32 +1,19 @@
 <script>
   import PortfolioTable from "./lib/PortfolioTable.svelte";
-  import SellModal from "./lib/SellModal.svelte";
+  import SummaryStats from "./lib/SummaryStats.svelte";
 
-  // ---------- STATE ----------
   let portfolio = $state(null);
   let error = $state(null);
 
-  // buy form fields
   let symbol = $state("");
   let name = $state("");
   let quantity = $state(0);
   let price = $state(0);
-  let sellOpen = $state(false);
-  let sellSymbol = $state("");
 
-
-  // ---------- EFFECTS ----------
-  $effect(() => {
-    loadPortfolio();
-  });
-
-  // ---------- FUNCTIONS ----------
   async function loadPortfolio() {
     try {
       const res = await fetch("http://localhost:8080/api/portfolio");
-      if (!res.ok) {
-        throw new Error("Failed to load portfolio");
-      }
+      if (!res.ok) throw new Error("Failed to load portfolio");
       portfolio = await res.json();
     } catch (e) {
       error = e.message;
@@ -46,11 +33,10 @@
         })
       });
 
-      if (!res.ok) {
+      if (!res.ok){
         throw new Error("Buy failed");
-      }
+      } 
 
-      // reset form
       symbol = "";
       name = "";
       quantity = 0;
@@ -62,30 +48,7 @@
     }
   }
 
-  function openSell(symbol) {
-    sellSymbol = symbol;
-    sellOpen = true;
-  }
-
-  async function confirmSell(symbol, quantity, price) {
-    try {
-      const res = await fetch("http://localhost:8080/api/sell", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ symbol, quantity, price })
-      });
-
-      if (!res.ok) {
-        throw new Error("Sell failed");
-      }
-
-      sellOpen = false;
-      await loadPortfolio();
-    } catch (e) {
-      error = e.message;
-    }
-  }
-
+  loadPortfolio();
 </script>
 
 <main>
@@ -98,7 +61,7 @@
     <input placeholder="Name" bind:value={name} />
     <input type="number" placeholder="Quantity" bind:value={quantity} />
     <input type="number" placeholder="Price" bind:value={price} />
-    <button onclick={buyInvestment}>Buy</button>
+    <button type="button" onclick={buyInvestment}>Buy</button>
   </div>
 
   <h2>Portfolio</h2>
@@ -108,18 +71,12 @@
   {:else if !portfolio}
     <p>Loading...</p>
   {:else}
+    <SummaryStats investments={portfolio.investments} />
+
     <PortfolioTable
-      portfolio={portfolio}
-      onSell={openSell}
+      investments={portfolio.investments}
+      loadPortfolio={loadPortfolio}
     />
   {/if}
-
-  <SellModal
-    open={sellOpen}
-    symbol={sellSymbol}
-    onConfirm={confirmSell}
-    onClose={() => (sellOpen = false)}
-  />
-
 
 </main>

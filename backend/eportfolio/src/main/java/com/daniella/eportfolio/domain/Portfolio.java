@@ -457,6 +457,15 @@ public class Portfolio {
         // only return true if both conditions are met
         return isGreaterOrEqual && isLessOrEqual;
     }
+
+    public void updatePrice(String symbol, double newPrice) {
+        for (Investment inv : investments) {
+            if (inv.getSymbol().equalsIgnoreCase(symbol)) {
+                inv.setPrice(newPrice);
+                return;
+            }
+        }
+    }    
     
     
     

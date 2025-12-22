@@ -45,5 +45,11 @@ public class PortfolioController {
         return "Sold " + request.getQuantity() + " of " + request.getSymbol();
     }
 
+    @PostMapping("/update-price")
+    public void updatePrice(@RequestBody UpdatePriceRequest req) {
+        portfolio.updatePrice(req.getSymbol(), req.getPrice());
+    }
+
+
 
 }
