@@ -1,16 +1,26 @@
 <script>
-  let portfolio = null;
-  let error = null;
+  // ---------- STATE ----------
+  let portfolio = $state(null);
+  let error = $state(null);
 
-  let symbol = "";
-  let name = "";
-  let quantity = 0;
-  let price = 0;
+  // buy form fields
+  let symbol = $state("");
+  let name = $state("");
+  let quantity = $state(0);
+  let price = $state(0);
 
+  // ---------- EFFECTS ----------
+  $effect(() => {
+    loadPortfolio();
+  });
+
+  // ---------- FUNCTIONS ----------
   async function loadPortfolio() {
     try {
       const res = await fetch("http://localhost:8080/api/portfolio");
-      if (!res.ok) throw new Error("Failed to load portfolio");
+      if (!res.ok) {
+        throw new Error("Failed to load portfolio");
+      }
       portfolio = await res.json();
     } catch (e) {
       error = e.message;
@@ -30,7 +40,9 @@
         })
       });
 
-      if (!res.ok) throw new Error("Buy failed");
+      if (!res.ok) {
+        throw new Error("Buy failed");
+      }
 
       // reset form
       symbol = "";
@@ -44,7 +56,34 @@
     }
   }
 
-  loadPortfolio();
+  async function sellInvestment(sym) {
+    const qty = Number(prompt("Quantity to sell:"));
+    const sellPrice = Number(prompt("Sell price:"));
+
+    if (!qty || !sellPrice) {
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8080/api/sell", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          symbol: sym,
+          quantity: qty,
+          price: sellPrice
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error("Sell failed");
+      }
+
+      await loadPortfolio();
+    } catch (e) {
+      error = e.message;
+    }
+  }
 </script>
 
 <main>
@@ -66,32 +105,36 @@
     <p style="color: red;">{error}</p>
   {:else if !portfolio}
     <p>Loading...</p>
+  {:else if portfolio.investments.length === 0}
+    <p>No investments yet.</p>
   {:else}
-    {#if portfolio.investments.length === 0}
-      <p>No investments yet.</p>
-    {:else}
-      <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Book Value</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each portfolio.investments as inv}
           <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Book Value</th>
+            <td>{inv.symbol}</td>
+            <td>{inv.name}</td>
+            <td>{inv.quantity}</td>
+            <td>${inv.price}</td>
+            <td>${inv.bookValue}</td>
+            <td>
+              <button on:click={() => sellInvestment(inv.symbol)}>
+                Sell
+              </button>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {#each portfolio.investments as inv}
-            <tr>
-              <td>{inv.symbol}</td>
-              <td>{inv.name}</td>
-              <td>{inv.quantity}</td>
-              <td>${inv.price}</td>
-              <td>${inv.bookValue}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    {/if}
+        {/each}
+      </tbody>
+    </table>
   {/if}
 </main>

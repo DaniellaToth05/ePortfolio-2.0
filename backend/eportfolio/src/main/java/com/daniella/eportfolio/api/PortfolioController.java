@@ -30,4 +30,20 @@ public class PortfolioController {
         return "Bought " + stock.getSymbol();
     }
 
+    @PostMapping("/sell")
+    public String sell(@RequestBody SellRequest request) {
+        double result = portfolio.sellInvestment(
+            request.getSymbol(),
+            request.getQuantity(),
+            request.getPrice()
+        );
+
+        if (result < 0) {
+            return "Sell failed";
+        }
+
+        return "Sold " + request.getQuantity() + " of " + request.getSymbol();
+    }
+
+
 }
