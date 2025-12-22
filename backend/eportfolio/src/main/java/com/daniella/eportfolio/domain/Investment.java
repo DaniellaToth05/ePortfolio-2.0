@@ -1,5 +1,6 @@
 package com.daniella.eportfolio.domain;
 
+
 /**
  * class to represent an investment in the portfolio
  */
@@ -9,7 +10,7 @@ public abstract class Investment {
     private int quantity;         // quantity of the investment
     private double price;         // price of the investment
     protected double bookValue;   // total value of the investment
-    protected boolean isFromFile; // boolean to check if the investment is from a file
+    protected Boolean isFromFile; // boolean to check if the investment is from a file
 
 
     /**

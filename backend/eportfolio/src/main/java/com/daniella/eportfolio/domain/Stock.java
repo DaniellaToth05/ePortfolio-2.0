@@ -16,6 +16,10 @@ public class Stock extends Investment {
     /** the fixed commision fee for buying and selling shares */
     private double commissionFee = 9.99; // commission fee for buy/sell
 
+    public Stock() {
+        super(null, null, 0, 0, false);
+    }
+    
     /**
      * method to create a stock with an inputted symbol, name, quantity, and price
      * 

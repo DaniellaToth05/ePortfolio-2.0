@@ -15,6 +15,10 @@ public class MutualFund extends Investment{
     
     private double redemptionFee = 45.00;   // fee for selling mutual funds
 
+    public MutualFund() {
+        super(null, null, 0, 0, false);
+    }
+    
     /**
      * method to create a mutual fund with an inputted symbol, name, quantity, and price
      * 

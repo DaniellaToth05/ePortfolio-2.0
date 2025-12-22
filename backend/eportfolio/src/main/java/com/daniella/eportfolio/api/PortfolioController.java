@@ -17,8 +17,17 @@ public class PortfolioController {
     }
 
     @PostMapping("/buy")
-    public String buy(@RequestBody Stock stock) {
+    public String buy(@RequestBody BuyRequest request) {
+        Stock stock = new Stock(
+            request.getSymbol(),
+            request.getName(),
+            request.getQuantity(),
+            request.getPrice(),
+            false
+        );
+
         portfolio.buyInvestment(stock);
         return "Bought " + stock.getSymbol();
     }
+
 }
