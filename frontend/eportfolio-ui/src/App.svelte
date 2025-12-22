@@ -1,4 +1,7 @@
 <script>
+  import Page from "./lib/layout/Page.svelte";
+  import Section from "./lib/layout/Section.svelte";
+  import Card from "./lib/layout/Card.svelte";
   import PortfolioTable from "./lib/PortfolioTable.svelte";
   import SummaryStats from "./lib/SummaryStats.svelte";
 
@@ -51,32 +54,49 @@
   loadPortfolio();
 </script>
 
-<main>
-  <h1>ePortfolio</h1>
 
-  <h2>Buy Investment</h2>
+<Page>
+  <Section>
+    <h1 class="title">ePortfolio</h1>
+  </Section>
 
-  <div>
-    <input placeholder="Symbol" bind:value={symbol} />
-    <input placeholder="Name" bind:value={name} />
-    <input type="number" placeholder="Quantity" bind:value={quantity} />
-    <input type="number" placeholder="Price" bind:value={price} />
-    <button type="button" onclick={buyInvestment}>Buy</button>
-  </div>
+  <Section>
+    <Card>
+      <h2>Buy Investment</h2>
 
-  <h2>Portfolio</h2>
+      <div class="buy-form">
+        <input placeholder="Symbol" bind:value={symbol} />
+        <input placeholder="Name" bind:value={name} />
+        <input type="number" placeholder="Quantity" bind:value={quantity} />
+        <input type="number" placeholder="Price" bind:value={price} />
+        <button type="button" onclick={buyInvestment}>Buy</button>
+      </div>
+    </Card>
+  </Section>
 
-  {#if error}
-    <p style="color: red;">{error}</p>
-  {:else if !portfolio}
-    <p>Loading...</p>
-  {:else}
-    <SummaryStats investments={portfolio.investments} />
+  <Section>
+    <h2>Portfolio</h2>
 
-    <PortfolioTable
-      investments={portfolio.investments}
-      loadPortfolio={loadPortfolio}
-    />
-  {/if}
+    {#if error}
+      <p style="color: red;">{error}</p>
+    {:else if !portfolio}
+      <p>Loading...</p>
+    {:else}
+      <SummaryStats investments={portfolio.investments} />
 
-</main>
+      <PortfolioTable
+        investments={portfolio.investments}
+        loadPortfolio={loadPortfolio}
+      />
+    {/if}
+  </Section>
+</Page>
+
+<style>
+  .buy-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+</style>

@@ -1,0 +1,32 @@
+:root {
+    --sage-primary: #9CAF88;
+    --sage-light: #B8C7A8;
+    --sage-dark: #7A8C6A;
+    --olive-muted: #8A9B78;
+  
+    --bg-main: linear-gradient(
+      135deg,
+      #FEFCFA 0%,
+      #F9F7F4 40%,
+      #F6F4F1 100%
+    );
+  
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --panel-border: rgba(156, 175, 136, 0.15);
+  
+    --text-main: #2A2926;
+    --text-muted: #6B6B6B;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+  
