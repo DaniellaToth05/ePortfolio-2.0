@@ -67,6 +67,31 @@
   {:else if !portfolio}
     <p>Loading...</p>
   {:else}
-    <pre>{JSON.stringify(portfolio, null, 2)}</pre>
+    {#if portfolio.investments.length === 0}
+      <p>No investments yet.</p>
+    {:else}
+      <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Book Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each portfolio.investments as inv}
+            <tr>
+              <td>{inv.symbol}</td>
+              <td>{inv.name}</td>
+              <td>{inv.quantity}</td>
+              <td>${inv.price}</td>
+              <td>${inv.bookValue}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    {/if}
   {/if}
 </main>
