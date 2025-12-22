@@ -1,4 +1,6 @@
 <script>
+  import PortfolioTable from "./lib/PortfolioTable.svelte";
+
   // ---------- STATE ----------
   let portfolio = $state(null);
   let error = $state(null);
@@ -96,7 +98,7 @@
     <input placeholder="Name" bind:value={name} />
     <input type="number" placeholder="Quantity" bind:value={quantity} />
     <input type="number" placeholder="Price" bind:value={price} />
-    <button on:click={buyInvestment}>Buy</button>
+    <button onclick={buyInvestment}>Buy</button>
   </div>
 
   <h2>Portfolio</h2>
@@ -105,36 +107,11 @@
     <p style="color: red;">{error}</p>
   {:else if !portfolio}
     <p>Loading...</p>
-  {:else if portfolio.investments.length === 0}
-    <p>No investments yet.</p>
   {:else}
-    <table border="1" cellpadding="8" cellspacing="0">
-      <thead>
-        <tr>
-          <th>Symbol</th>
-          <th>Name</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Book Value</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each portfolio.investments as inv}
-          <tr>
-            <td>{inv.symbol}</td>
-            <td>{inv.name}</td>
-            <td>{inv.quantity}</td>
-            <td>${inv.price}</td>
-            <td>${inv.bookValue}</td>
-            <td>
-              <button on:click={() => sellInvestment(inv.symbol)}>
-                Sell
-              </button>
-            </td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+    <PortfolioTable
+      portfolio={portfolio}
+      onSell={sellInvestment}
+    />
   {/if}
+
 </main>
