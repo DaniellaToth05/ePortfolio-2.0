@@ -1,7 +1,26 @@
 <script>
   import Header from "./components/Header.svelte";
   import Hero from "./components/Hero.svelte";
+
+  let portfolio = $state(null);
+  let error = $state(null);
+
+  async function loadPortfolio() {
+    try {
+      const res = await fetch("http://localhost:8080/api/portfolio");
+      if (!res.ok) throw new Error("Failed to load portfolio");
+      portfolio = await res.json();
+    } catch (e) {
+      error = e.message;
+    }
+  }
+
+  loadPortfolio();
 </script>
 
 <Header />
-<Hero />
+
+<main>
+  <Hero investments={portfolio?.investments ?? []} />
+</main>
+

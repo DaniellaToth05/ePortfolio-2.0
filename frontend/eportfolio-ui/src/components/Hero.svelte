@@ -1,3 +1,10 @@
+<script>
+    import PortfolioCard from "./PortfolioCard.svelte";
+    let {
+        investments = []
+    } = $props();
+</script>
+
 <section class="hero">
     <div class="container">
       <div class="hero-content">
@@ -10,9 +17,13 @@
           </p>
         </div>
   
-        <!-- RIGHT (EMPTY FOR NOW) -->
-        <div></div>
+        <!-- RIGHT -->
+        <PortfolioCard investments={investments} />
       </div>
     </div>
+
+    <div class="floating-element leaf-1"></div>
+    <div class="floating-element leaf-2"></div>
+    <div class="floating-element sage-accent"></div>
   </section>
   

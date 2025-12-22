@@ -910,3 +910,14 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+.empty-state {
+  margin-top: 32px;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(156, 175, 136, 0.06);
+  border: 1px dashed rgba(156, 175, 136, 0.3);
+  color: var(--soft-grey);
+  font-size: 14px;
+  text-align: center;
+}
