@@ -1,5 +1,6 @@
 <script>
   import PortfolioTable from "./lib/PortfolioTable.svelte";
+  import SellModal from "./lib/SellModal.svelte";
 
   // ---------- STATE ----------
   let portfolio = $state(null);
@@ -10,6 +11,9 @@
   let name = $state("");
   let quantity = $state(0);
   let price = $state(0);
+  let sellOpen = $state(false);
+  let sellSymbol = $state("");
+
 
   // ---------- EFFECTS ----------
   $effect(() => {
@@ -58,34 +62,30 @@
     }
   }
 
-  async function sellInvestment(sym) {
-    const qty = Number(prompt("Quantity to sell:"));
-    const sellPrice = Number(prompt("Sell price:"));
+  function openSell(symbol) {
+    sellSymbol = symbol;
+    sellOpen = true;
+  }
 
-    if (!qty || !sellPrice) {
-      return;
-    }
-
+  async function confirmSell(symbol, quantity, price) {
     try {
       const res = await fetch("http://localhost:8080/api/sell", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          symbol: sym,
-          quantity: qty,
-          price: sellPrice
-        })
+        body: JSON.stringify({ symbol, quantity, price })
       });
 
       if (!res.ok) {
         throw new Error("Sell failed");
       }
 
+      sellOpen = false;
       await loadPortfolio();
     } catch (e) {
       error = e.message;
     }
   }
+
 </script>
 
 <main>
@@ -110,8 +110,16 @@
   {:else}
     <PortfolioTable
       portfolio={portfolio}
-      onSell={sellInvestment}
+      onSell={openSell}
     />
   {/if}
+
+  <SellModal
+    open={sellOpen}
+    symbol={sellSymbol}
+    onConfirm={confirmSell}
+    onClose={() => (sellOpen = false)}
+  />
+
 
 </main>
