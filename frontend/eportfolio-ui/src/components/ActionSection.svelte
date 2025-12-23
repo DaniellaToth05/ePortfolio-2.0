@@ -2,6 +2,9 @@
     import analyticsIcon from "../assets/analytics.png";
     import searchIcon from "../assets/search.png";
 
+    import BuyModal from "../modals/BuyModal.svelte";
+    import SellModal from "../modals/SellModal.svelte";
+
     let confirmation = $state({
         message: "",
         success: true,
@@ -18,18 +21,14 @@
     }, 2500);
     }
 
-
-    import BuyModal from "../modals/BuyModal.svelte";
-
+    // buy modal
     let buyOpen = $state(false);
     function openBuy() {
         buyOpen = true;
     }
-
     function closeBuy() {
         buyOpen = false;
     }
-
     async function handleBuy(data) {
     try {
         const res = await fetch("/api/buy", {
@@ -39,20 +38,46 @@
             },
             body: JSON.stringify(data)
         });
-
-
         if (!res.ok) {
             throw new Error("Buy failed");
         }
-
         showConfirmation(`Successfully bought ${data.quantity} shares of ${data.symbol}.`);
         closeBuy();
         console.log("Buy successful:", data);
-
         } catch (err) {
             showConfirmation("Purchase failed. Please try again.", false);
         }
     }
+
+    // sell modal
+    let sellOpen = $state(false);
+
+    function openSell() {
+        sellOpen = true;
+    }
+    function closeSell() {
+        sellOpen = false;
+    }
+    async function handleSell(data) {
+        try {
+            const res = await fetch("/api/sell", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok){
+            throw new Error();
+        } 
+        showConfirmation(
+            `Successfully sold ${data.quantity} shares of ${data.symbol}.`
+        );
+        console.log("Sell successful:", data);
+        closeSell();
+        } catch {
+            showConfirmation("Sale failed. Please try again.", false);
+        }
+    }
+
 
     
 </script>
@@ -72,7 +97,7 @@
           <div>Add Investment</div>
         </button>
   
-        <button class="action-btn" type="button">
+        <button class="action-btn" type="button" onclick={openSell}>
           <div class="action-icon">-</div>
           <div>Sell Investment</div>
         </button>
@@ -115,4 +140,11 @@
     onClose={closeBuy}
     onSubmit={handleBuy}
   />
+
+  <SellModal
+    open={sellOpen}
+    onClose={closeSell}
+    onSubmit={handleSell}
+  />
+
   

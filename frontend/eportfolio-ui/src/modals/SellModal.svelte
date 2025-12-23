@@ -1,70 +1,86 @@
 <script>
-    let {
-      open = false,
-      symbol = "",
-      onConfirm,
-      onClose
-    } = $props();
-  
-    let quantity = $state(0);
-    let price = $state(0);
-  
-    function confirm() {
-      if (!quantity || !price) return;
-      onConfirm(symbol, quantity, price);
-      quantity = 0;
-      price = 0;
-      onClose();
-    }
-  </script>
-  
-  {#if open}
-    <dialog open class="modal">
-      <h3>Sell {symbol}</h3>
-  
-      <input
-        type="number"
-        placeholder="Quantity"
-        bind:value={quantity}
-      />
-  
-      <input
-        type="number"
-        placeholder="Sell price"
-        bind:value={price}
-      />
-  
-      <div class="actions">
-        <button type="button" onclick={confirm}>Sell</button>
-        <form method="dialog">
-          <button type="submit" class="secondary">Cancel</button>
-        </form>
+  let {
+    open = false,
+    onClose,
+    onSubmit
+  } = $props();
+
+  let symbol = $state("");
+  let quantity = $state(0);
+  let price = $state(0);
+
+  function submit(e) {
+    e.preventDefault();
+
+    onSubmit({
+      symbol,
+      quantity,
+      price
+    });
+
+    symbol = "";
+    quantity = 0;
+    price = 0;
+    onClose();
+  }
+</script>
+
+{#if open}
+  <div class="modal-overlay">
+    <div class="modal">
+      <button class="close-btn" type="button" onclick={onClose}>×</button>
+
+      <div class="modal-header">
+        <h2 class="modal-title">Sell Investment</h2>
+        <p class="modal-subtitle">Remove from Portfolio</p>
       </div>
-    </dialog>
-  {/if}
 
+      <form onsubmit={submit}>
+        <div class="form-group">
+          <label class="form-label" for="sell-symbol">Symbol</label>
+          <input
+            id="sell-symbol"
+            class="form-input"
+            bind:value={symbol}
+            required
+          />
+        </div>
 
-  <style>
-    dialog.modal {
-      border: none;
-      border-radius: 8px;
-      padding: 1.5rem;
-      width: 300px;
-    }
-  
-    dialog::backdrop {
-      background: rgba(0, 0, 0, 0.4);
-    }
-  
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-    }
-  
-    .secondary {
-      background: #eee;
-    }
-  </style>
-  
-  
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="sell-quantity">Quantity</label>
+            <input
+              id="sell-quantity"
+              type="number"
+              class="form-input"
+              bind:value={quantity}
+              min="1"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sell-price">Sell Price</label>
+            <input
+              id="sell-price"
+              type="number"
+              step="0.01"
+              class="form-input price-input"
+              bind:value={price}
+              required
+            />
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick={onClose}>
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Confirm Sale
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+{/if}
