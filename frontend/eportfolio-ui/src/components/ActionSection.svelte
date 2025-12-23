@@ -1,6 +1,60 @@
 <script>
     import analyticsIcon from "../assets/analytics.png";
     import searchIcon from "../assets/search.png";
+
+    let confirmation = $state({
+        message: "",
+        success: true,
+        visible: false
+    });
+
+    function showConfirmation(msg, success = true) {
+    confirmation.message = msg;
+    confirmation.success = success;
+    confirmation.visible = true;
+
+    setTimeout(() => {
+        confirmation.visible = false;
+    }, 2500);
+    }
+
+
+    import BuyModal from "../modals/BuyModal.svelte";
+
+    let buyOpen = $state(false);
+    function openBuy() {
+        buyOpen = true;
+    }
+
+    function closeBuy() {
+        buyOpen = false;
+    }
+
+    async function handleBuy(data) {
+    try {
+        const res = await fetch("/api/buy", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+
+        if (!res.ok) {
+            throw new Error("Buy failed");
+        }
+
+        showConfirmation(`Successfully bought ${data.quantity} shares of ${data.symbol}.`);
+        closeBuy();
+        console.log("Buy successful:", data);
+
+        } catch (err) {
+            showConfirmation("Purchase failed. Please try again.", false);
+        }
+    }
+
+    
 </script>
 
 <section class="container">
@@ -13,7 +67,7 @@
       </div>
   
       <div class="action-grid">
-        <button class="action-btn" type="button">
+        <button class="action-btn" type="button" onclick={openBuy}>
           <div class="action-icon">+</div>
           <div>Add Investment</div>
         </button>
@@ -42,6 +96,23 @@
             <div>Portfolio Search</div>
         </button>
       </div>
+
+      {#if confirmation.visible}
+        <div
+            class="confirmation-message"
+            class:success={confirmation.success}
+            class:error={!confirmation.success}
+        >
+            {confirmation.message}
+        </div>
+      {/if}
+
     </div>
   </section>
+
+  <BuyModal
+    open={buyOpen}
+    onClose={closeBuy}
+    onSubmit={handleBuy}
+  />
   
