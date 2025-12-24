@@ -7,6 +7,7 @@
     import UpdatePriceModal from "../modals/UpdatePriceModal.svelte";
     import SearchModal from "../modals/SearchModal.svelte";
     import SearchResults from "./SearchResults.svelte";
+    import AnalyticsModal from "../modals/AnalyticsModal.svelte";
 
     let { investments = [], loadPortfolio } = $props();
 
@@ -154,6 +155,14 @@
 
     const shownResults = $derived(() => (isSearching ? searchResults : investments));  
 
+    // analytics modal
+    let analyticsOpen = $state(false);
+    function openAnalytics() {
+        analyticsOpen = true;
+    }
+    function closeAnalytics() {
+        analyticsOpen = false;
+    }
 </script>
 
 <section class="container">
@@ -181,7 +190,7 @@
           <div>Update Prices</div>
         </button>
   
-        <button class="action-btn" type="button">
+        <button class="action-btn" type="button" onclick={openAnalytics}>
             <div class="action-icon">
               <img src={analyticsIcon} alt="Analytics Icon" class="icon-img" />
             </div>
@@ -236,6 +245,13 @@
     onClose={closeSearch}
     onSubmit={handleSearch}
   />
+
+  <AnalyticsModal
+    open={analyticsOpen}
+    investments={investments}
+    onClose={closeAnalytics}
+  />
+
 
 
 
