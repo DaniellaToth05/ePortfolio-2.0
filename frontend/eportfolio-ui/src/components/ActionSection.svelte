@@ -4,6 +4,8 @@
 
     import BuyModal from "../modals/BuyModal.svelte";
     import SellModal from "../modals/SellModal.svelte";
+    import UpdatePriceModal from "../modals/UpdatePriceModal.svelte";
+
 
     let confirmation = $state({
         message: "",
@@ -68,15 +70,41 @@
         if (!res.ok){
             throw new Error();
         } 
-        showConfirmation(
-            `Successfully sold ${data.quantity} shares of ${data.symbol}.`
-        );
+        showConfirmation(`Successfully sold ${data.quantity} shares of ${data.symbol}.`);
         console.log("Sell successful:", data);
         closeSell();
         } catch {
             showConfirmation("Sale failed. Please try again.", false);
         }
     }
+
+    // update price modal
+    let updateOpen = $state(false);
+
+    function openUpdate() {
+    updateOpen = true;
+    }
+    function closeUpdate() {
+    updateOpen = false;
+    }
+    async function handleUpdate(data) {
+    try {
+        const res = await fetch("/api/update-price", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+        });
+
+        if (!res.ok){
+            throw new Error();
+        } 
+        showConfirmation(`Updated ${data.symbol} to $${data.price}.`);
+        closeUpdate();
+        } catch {
+            showConfirmation("Update failed. Please try again.", false);
+        }
+    }
+
 
 
     
@@ -102,7 +130,7 @@
           <div>Sell Investment</div>
         </button>
   
-        <button class="action-btn" type="button">
+        <button class="action-btn" type="button" onclick={openUpdate}>
           <div class="action-icon">↗</div>
           <div>Update Prices</div>
         </button>
@@ -123,11 +151,7 @@
       </div>
 
       {#if confirmation.visible}
-        <div
-            class="confirmation-message"
-            class:success={confirmation.success}
-            class:error={!confirmation.success}
-        >
+        <div class="confirmation-message" class:success={confirmation.success} class:error={!confirmation.success} >
             {confirmation.message}
         </div>
       {/if}
@@ -146,5 +170,12 @@
     onClose={closeSell}
     onSubmit={handleSell}
   />
+
+  <UpdatePriceModal
+    open={updateOpen}
+    onClose={closeUpdate}
+    onSubmit={handleUpdate}
+  />
+
 
   
