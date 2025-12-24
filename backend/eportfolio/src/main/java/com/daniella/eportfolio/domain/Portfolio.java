@@ -466,9 +466,67 @@ public class Portfolio {
             }
         }
     }    
-    
-    
-    
+
+
+    public ArrayList<Investment> search(
+        String symbolInput,
+        String keywordsInput,
+        String priceRangeInput
+    ) {
+        ArrayList<Investment> matchedInvestments = new ArrayList<>();
+
+        // ---- keyword filter ----
+        if (!keywordsInput.isEmpty()) {
+            StringTokenizer tokenizer = new StringTokenizer(keywordsInput, " ");
+            HashSet<Investment> keywordMatches = null;
+
+            while (tokenizer.hasMoreTokens()) {
+                String keyword = tokenizer.nextToken().toLowerCase();
+
+                if (mapKeyword.containsKey(keyword)) {
+                    HashSet<Investment> matches =
+                        new HashSet<>(mapKeyword.get(keyword));
+
+                    if (keywordMatches == null) {
+                        keywordMatches = matches;
+                    } else {
+                        keywordMatches.retainAll(matches);
+                    }
+                } else {
+                    keywordMatches = new HashSet<>();
+                    break;
+                }
+            }
+
+            if (keywordMatches != null) {
+                matchedInvestments.addAll(keywordMatches);
+            }
+        } else {
+            matchedInvestments.addAll(investments);
+        }
+
+        // ---- symbol filter ----
+        if (!symbolInput.isEmpty()) {
+            for (int i = matchedInvestments.size() - 1; i >= 0; i--) {
+                Investment inv = matchedInvestments.get(i);
+                if (!inv.getSymbol().equalsIgnoreCase(symbolInput)) {
+                    matchedInvestments.remove(i);
+                }
+            }
+        }
+
+        // ---- price range filter ----
+        if (!priceRangeInput.isEmpty()) {
+            for (int i = matchedInvestments.size() - 1; i >= 0; i--) {
+                Investment inv = matchedInvestments.get(i);
+                if (!matchesPrice(inv.getPrice(), priceRangeInput)) {
+                    matchedInvestments.remove(i);
+                }
+            }
+        }
+
+        return matchedInvestments;
+    }
 
 
 }

@@ -1,7 +1,11 @@
 package com.daniella.eportfolio.api;
 
+import com.daniella.eportfolio.domain.Investment;
 import com.daniella.eportfolio.domain.Portfolio;
 import com.daniella.eportfolio.domain.Stock;
+
+import java.util.ArrayList;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,6 +52,16 @@ public class PortfolioController {
     @PostMapping("/update-price")
     public void updatePrice(@RequestBody UpdatePriceRequest req) {
         portfolio.updatePrice(req.getSymbol(), req.getPrice());
+    }
+
+    
+    @PostMapping("/search")
+    public ArrayList<Investment> search(@RequestBody SearchRequest req) {
+        return portfolio.search(
+            req.getSymbol(),
+            req.getKeywords(),
+            req.getPriceRange()
+        );
     }
 
 

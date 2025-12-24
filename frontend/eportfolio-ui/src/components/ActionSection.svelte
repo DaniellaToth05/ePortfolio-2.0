@@ -5,6 +5,8 @@
     import BuyModal from "../modals/BuyModal.svelte";
     import SellModal from "../modals/SellModal.svelte";
     import UpdatePriceModal from "../modals/UpdatePriceModal.svelte";
+    import SearchModal from "../modals/SearchModal.svelte";
+    import SearchResults from "./SearchResults.svelte";
 
 
     let confirmation = $state({
@@ -32,20 +34,20 @@
         buyOpen = false;
     }
     async function handleBuy(data) {
-    try {
-        const res = await fetch("/api/buy", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-        if (!res.ok) {
-            throw new Error("Buy failed");
-        }
-        showConfirmation(`Successfully bought ${data.quantity} shares of ${data.symbol}.`);
-        closeBuy();
-        console.log("Buy successful:", data);
+        try {
+            const res = await fetch("/api/buy", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            if (!res.ok) {
+                throw new Error("Buy failed");
+            }
+            showConfirmation(`Successfully bought ${data.quantity} shares of ${data.symbol}.`);
+            closeBuy();
+            console.log("Buy successful:", data);
         } catch (err) {
             showConfirmation("Purchase failed. Please try again.", false);
         }
@@ -88,22 +90,67 @@
     updateOpen = false;
     }
     async function handleUpdate(data) {
-    try {
-        const res = await fetch("/api/update-price", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-        });
+        try {
+            const res = await fetch("/api/update-price", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+            });
 
-        if (!res.ok){
-            throw new Error();
-        } 
-        showConfirmation(`Updated ${data.symbol} to $${data.price}.`);
-        closeUpdate();
+            if (!res.ok){
+                throw new Error();
+            } 
+            showConfirmation(`Updated ${data.symbol} to $${data.price}.`);
+            closeUpdate();
         } catch {
             showConfirmation("Update failed. Please try again.", false);
         }
     }
+
+    // search modal
+    let searchOpen = $state(false);
+    let searchResults = $state([]);
+    let isSearching = $state(false);
+
+    function openSearch() {
+        searchOpen = true;
+    }
+
+    function closeSearch() {
+        searchOpen = false;
+    }
+
+    function clearSearch() {
+        searchResults = [];
+        isSearching = false;
+    }
+
+    async function handleSearch(data) {
+        try {
+            const res = await fetch("/api/search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                symbol: data.symbol ?? "",
+                keywords: data.keywords ?? "",
+                priceRange: data.priceRange ?? ""
+            })
+            });
+
+            if (!res.ok) {
+            throw new Error("Search failed");
+            }
+
+            const results = await res.json();
+
+            searchResults = results;
+            isSearching = true;
+            closeSearch();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
 
 
@@ -142,7 +189,7 @@
             <div>Performance Analytics</div>
         </button>
   
-        <button class="action-btn" type="button">
+        <button class="action-btn" type="button" onclick={openSearch}>
             <div class="action-icon">
               <img src={searchIcon} alt="Search Icon" class="icon-img" />
             </div>
@@ -158,6 +205,14 @@
 
     </div>
   </section>
+
+  {#if isSearching}
+    <SearchResults
+        results={searchResults}
+        onClear={clearSearch}
+    />
+  {/if}
+
 
   <BuyModal
     open={buyOpen}
@@ -176,6 +231,13 @@
     onClose={closeUpdate}
     onSubmit={handleUpdate}
   />
+
+  <SearchModal
+    open={searchOpen}
+    onClose={closeSearch}
+    onSubmit={handleSearch}
+  />
+
 
 
   
