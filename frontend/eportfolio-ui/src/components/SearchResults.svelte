@@ -1,6 +1,7 @@
 <script>
     let {
       results = [],
+      isFiltered = false,
       onClear
     } = $props();
   </script>
@@ -8,15 +9,19 @@
   <section class="search-results container">
     <div class="results-card">
       <div class="results-header">
-        <h3>Search Results</h3>
-        <button class="clear-btn" type="button" onclick={onClear}>
-          Clear Search
-        </button>
+        <h3>{isFiltered ? "Search Results" : "Portfolio"}</h3>
+        {#if isFiltered}
+            <button class="clear-btn" type="button" onclick={onClear}>
+                Clear Search
+            </button>
+        {/if}
       </div>
   
       {#if results.length === 0}
         <div class="empty-state">
-          No investments matched your search.
+            {isFiltered
+                ? "No investments matched your search."
+                : "No investments yet — start tracking by adding your first one."}
         </div>
       {:else}
         <table class="results-table">

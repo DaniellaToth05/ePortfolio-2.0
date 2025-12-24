@@ -24,7 +24,10 @@
 
 <main>
   <Hero investments={portfolio?.investments ?? []} />
-  <ActionSection />
+  <ActionSection
+    investments={portfolio?.investments ?? []}
+    loadPortfolio={loadPortfolio}
+  />
   <GoalsSection />
 </main>
 

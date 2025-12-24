@@ -8,6 +8,7 @@
     import SearchModal from "../modals/SearchModal.svelte";
     import SearchResults from "./SearchResults.svelte";
 
+    let { investments = [], loadPortfolio } = $props();
 
     let confirmation = $state({
         message: "",
@@ -16,13 +17,13 @@
     });
 
     function showConfirmation(msg, success = true) {
-    confirmation.message = msg;
-    confirmation.success = success;
-    confirmation.visible = true;
+        confirmation.message = msg;
+        confirmation.success = success;
+        confirmation.visible = true;
 
-    setTimeout(() => {
-        confirmation.visible = false;
-    }, 2500);
+        setTimeout(() => {
+            confirmation.visible = false;
+        }, 2500);
     }
 
     // buy modal
@@ -151,10 +152,8 @@
         }
     }
 
+    const shownResults = $derived(() => (isSearching ? searchResults : investments));  
 
-
-
-    
 </script>
 
 <section class="container">
@@ -206,12 +205,12 @@
     </div>
   </section>
 
-  {#if isSearching}
     <SearchResults
-        results={searchResults}
+        results={shownResults()}
+        isFiltered={isSearching}
         onClear={clearSearch}
     />
-  {/if}
+
 
 
   <BuyModal
