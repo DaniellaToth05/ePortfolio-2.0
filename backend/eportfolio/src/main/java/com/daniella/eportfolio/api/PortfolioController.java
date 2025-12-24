@@ -5,6 +5,7 @@ import com.daniella.eportfolio.domain.Portfolio;
 import com.daniella.eportfolio.domain.Stock;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class PortfolioController {
 
     private final Portfolio portfolio = new Portfolio();
+    private final List<GoalRequest> goals = new ArrayList<>();
+    private int goalIdCounter = 1;
 
     @GetMapping("/portfolio")
     public Portfolio getPortfolio() {
@@ -64,6 +67,36 @@ public class PortfolioController {
         );
     }
 
+    @GetMapping("/goals")
+    public List<GoalRequest> getGoals() {
+        return goals;
+    }
+
+    @PostMapping("/goals")
+    public GoalRequest addGoal(@RequestBody GoalRequest goal) {
+        goal.setId(goalIdCounter++);
+        goals.add(goal);
+        return goal;
+    }
+
+    @PutMapping("/goals/{id}")
+    public GoalRequest updateGoal(@PathVariable int id, @RequestBody GoalRequest updated) {
+        for (int i = 0; i < goals.size(); i++) {
+            if (goals.get(i).getId() == id) {
+                updated.setId(id);
+                goals.set(i, updated);
+                return updated;
+            }
+        }
+        return null;
+    }
+
+
+
+    @DeleteMapping("/goals/{id}")
+    public void deleteGoal(@PathVariable int id) {
+        goals.removeIf(g -> g.getId() == id);
+    }
 
 
 }

@@ -1,11 +1,23 @@
-<script>
+<script lang="ts">
   import Header from "./components/Header.svelte";
   import Hero from "./components/Hero.svelte";
   import ActionSection from "./components/ActionSection.svelte";
   import GoalsSection from "./components/GoalsSection.svelte";
 
-  let portfolio = $state(null);
-  let error = $state(null);
+  interface Investment {
+    symbol: string;
+    name: string;
+    quantity: number;
+    price: number;
+    bookValue: number;
+  }
+
+  interface Portfolio {
+    investments: Investment[];
+  }
+
+  let portfolio = $state<Portfolio | null>(null);
+  let error = $state<string | null>(null);
 
   async function loadPortfolio() {
     try {
@@ -28,6 +40,6 @@
     investments={portfolio?.investments ?? []}
     loadPortfolio={loadPortfolio}
   />
-  <GoalsSection />
+  <GoalsSection investments={portfolio?.investments ?? []} />
 </main>
 

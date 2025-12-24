@@ -1084,3 +1084,30 @@ body {
 .positive {
   color: var(--sage-dark);
 }
+
+
+.empty-goals {
+  text-align: center;
+  color: var(--soft-grey);
+  font-style: italic;
+  margin-top: 2rem;
+}
+
+.goal-edit {
+  background: rgba(156, 175, 136, 0.12);
+  border: 1px solid rgba(156, 175, 136, 0.25);
+  color: var(--sage-dark);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.goal-edit:hover {
+  background: rgba(156, 175, 136, 0.22);
+  border-color: var(--sage-primary);
+  transform: translateY(-1px);
+}
