@@ -1111,3 +1111,16 @@ body {
   border-color: var(--sage-primary);
   transform: translateY(-1px);
 }
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+}
+
+.logo-img {
+  width: 4vw;
+  height: 4vw;
+  object-fit: contain;
+}

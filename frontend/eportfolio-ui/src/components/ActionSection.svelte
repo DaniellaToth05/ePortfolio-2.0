@@ -48,11 +48,11 @@
                 throw new Error("Buy failed");
             }
             await loadPortfolio();
-            showConfirmation(`Successfully bought ${data.quantity} shares of ${data.symbol}.`);
+            showConfirmation(`Successfully added ${data.quantity} shares of ${data.symbol}.`);
             closeBuy();
-            console.log("Buy successful:", data);
+            console.log("Add successful:", data);
         } catch (err) {
-            showConfirmation("Purchase failed. Please try again.", false);
+            showConfirmation("Add failed. Please try again.", false);
         }
     }
 
@@ -76,11 +76,11 @@
             throw new Error();
         } 
         await loadPortfolio();
-        showConfirmation(`Successfully sold ${data.quantity} shares of ${data.symbol}.`);
-        console.log("Sell successful:", data);
+        showConfirmation(`Successfully removed ${data.quantity} shares of ${data.symbol}.`);
+        console.log("Remove successful:", data);
         closeSell();
         } catch {
-            showConfirmation("Sale failed. Please try again.", false);
+            showConfirmation("Remove failed. Please try again.", false);
         }
     }
 

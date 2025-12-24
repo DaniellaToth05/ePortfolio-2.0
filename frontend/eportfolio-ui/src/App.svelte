@@ -35,11 +35,17 @@
 <Header />
 
 <main>
-  <Hero investments={portfolio?.investments ?? []} />
-  <ActionSection
-    investments={portfolio?.investments ?? []}
-    loadPortfolio={loadPortfolio}
-  />
-  <GoalsSection investments={portfolio?.investments ?? []} />
+  <section id="dashboard">
+    <Hero investments={portfolio?.investments ?? []} />
+  </section>
+  <section id="portfolio">
+    <ActionSection
+      investments={portfolio?.investments ?? []}
+      loadPortfolio={loadPortfolio}
+    />
+  </section>
+  <section id="goals">
+    <GoalsSection investments={portfolio?.investments ?? []} />
+  </section>
 </main>
 
