@@ -47,6 +47,7 @@
             if (!res.ok) {
                 throw new Error("Buy failed");
             }
+            await loadPortfolio();
             showConfirmation(`Successfully bought ${data.quantity} shares of ${data.symbol}.`);
             closeBuy();
             console.log("Buy successful:", data);
@@ -74,6 +75,7 @@
         if (!res.ok){
             throw new Error();
         } 
+        await loadPortfolio();
         showConfirmation(`Successfully sold ${data.quantity} shares of ${data.symbol}.`);
         console.log("Sell successful:", data);
         closeSell();
@@ -101,7 +103,8 @@
 
             if (!res.ok){
                 throw new Error();
-            } 
+            }
+            await loadPortfolio(); 
             showConfirmation(`Updated ${data.symbol} to $${data.price}.`);
             closeUpdate();
         } catch {
@@ -219,8 +222,6 @@
         isFiltered={isSearching}
         onClear={clearSearch}
     />
-
-
 
   <BuyModal
     open={buyOpen}

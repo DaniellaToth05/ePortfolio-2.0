@@ -41,13 +41,10 @@
             }
         );
 
-        const saved = await res.json();
-
-        if (goal.id) {
-            goals = goals.map(g => (g.id === saved.id ? saved : g));
-        } else {
-            goals = [...goals, saved];
-        }
+        if (!res.ok){
+            return;
+        } 
+        await loadGoals(); 
 
         modalOpen = false;
         editingGoal = null;
