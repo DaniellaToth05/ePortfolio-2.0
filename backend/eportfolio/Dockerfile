@@ -1,23 +1,17 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS build
-
+# ---- Build Stage ----
+FROM eclipse-temurin:17 AS builder
 WORKDIR /app
 
-# Copy pom.xml first for dependency caching
-COPY backend/eportfolio/pom.xml .
+COPY . .
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
-RUN mvn dependency:go-offline
-
-# Copy source
-COPY backend/eportfolio/src ./src
-
-RUN mvn clean package -DskipTests
-
-FROM eclipse-temurin:17-jre
-
+# ---- Runtime Stage ----
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+# CHANGE THIS to match your actual jar name
+COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
-
 CMD ["java", "-jar", "app.jar"]
