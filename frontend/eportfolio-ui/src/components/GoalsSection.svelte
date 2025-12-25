@@ -1,5 +1,6 @@
 <script lang="ts">
     import GoalModal from "../modals/GoalModal.svelte";
+    import { API_BASE } from "../lib/api";
   
     interface Investment {
       symbol: string;
@@ -27,13 +28,15 @@
     }
 
     async function loadGoals() {
-      const res = await fetch("/api/goals");
+      const res = await fetch(`${API_BASE}/api/goals`);
       goals = await res.json();
     }
   
     async function saveGoal(goal: Goal) {
         const res = await fetch(
-            goal.id ? `/api/goals/${goal.id}` : "/api/goals",
+            goal.id
+                ? `${API_BASE}/api/goals/${goal.id}`
+                : `${API_BASE}/api/goals`,
             {
                 method: goal.id ? "PUT" : "POST",
                 headers: { "Content-Type": "application/json" },

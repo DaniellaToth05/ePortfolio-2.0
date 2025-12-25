@@ -1,6 +1,8 @@
 <script>
     import analyticsIcon from "../assets/analytics.png";
     import searchIcon from "../assets/search.png";
+    import { API_BASE } from "../lib/api";
+
 
     import BuyModal from "../modals/BuyModal.svelte";
     import SellModal from "../modals/SellModal.svelte";
@@ -37,7 +39,7 @@
     }
     async function handleBuy(data) {
         try {
-            const res = await fetch("/api/buy", {
+            const res = await fetch(`${API_BASE}/api/buy`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -67,7 +69,7 @@
     }
     async function handleSell(data) {
         try {
-            const res = await fetch("/api/sell", {
+            const res = await fetch(`${API_BASE}/api/sell`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -95,7 +97,7 @@
     }
     async function handleUpdate(data) {
         try {
-            const res = await fetch("/api/update-price", {
+            const res = await fetch(`${API_BASE}/api/update-price`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -132,7 +134,7 @@
 
     async function handleSearch(data) {
         try {
-            const res = await fetch("/api/search", {
+            const res = await fetch(`${API_BASE}/api/search`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

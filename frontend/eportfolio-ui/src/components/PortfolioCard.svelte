@@ -48,11 +48,14 @@
         return "—";
       }
   
-      const percent =
-        (largestPosition().value / totalValue()) * 100;
+      const percent = (largestPosition().value / totalValue()) * 100;
   
-      if (percent <= 25) return "Low";
-      if (percent <= 45) return "Moderate";
+      if (percent <= 25){
+        return "Low";
+      } 
+      if (percent <= 45){
+        return "Moderate";
+      } 
       return "High";
     });
   
