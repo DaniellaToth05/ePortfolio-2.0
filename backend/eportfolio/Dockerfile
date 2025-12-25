@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -DskipTests -e -X
 
 # ---- Runtime Stage ----
 FROM eclipse-temurin:17-jdk-alpine
