@@ -1,43 +1,108 @@
-# Svelte + Vite
+# ePortfolio – Investment Management Application
 
-This template should help get you started developing with Svelte in Vite.
+**This project showcases my ability to modernize legacy systems by replacing Java Swing interfaces with a modern, web-based frontend using HTML, CSS, and JavaScript, all powered by a Spring Boot backend.**
 
-## Recommended IDE Setup
+## Description
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+**ePortfolio** is an investment management application that allows users to manage their investments with ease. Initially developed as a **Java Swing GUI** for a school assignment, the project has been modernized with a clean **HTML/CSS/JavaScript** frontend for an enhanced user experience and includes additional functionalities. Now deployed live on Render.
 
-## Need an official Svelte framework?
+---
+Visit the deployed version on [Render](https://eportfolio-7hlr.onrender.com/) 
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+![Home Sample](backend/demo/src/main/resources/static/homepage.png)
+---
 
-## Technical considerations
+## Features
 
-**Why use this over SvelteKit?**
+- **Buy Investments**: Add stocks or mutual funds to your portfolio.
+- **Sell Investments**: Remove or reduce holdings.
+- **Update Prices**: Update prices for existing investments.
+- **View Gains**: View total and individual investment gains.
+- **Search Portfolio**: Find investments by symbol, name, or price range.
+- **Set Financial Goals**: Track progress toward savings milestones.
+- **Interactive UI**: Smooth modals, progress bars, and confirmation messages.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+---
 
-This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+## Technologies Used
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+### Frontend
+- **HTML5**
+- **CSS3**
+- **Vanilla JavaScript**
 
-**Why include `.vscode/extensions.json`?**
+### Backend
+- **Java 17**
+- **Spring Boot**
+- **Maven**
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+### Tools & Deployment
+- **Docker**
+- **Render (PaaS deployment)**
+- **RESTful APIs**
+- **Cross-Origin Resource Sharing (CORS)**
 
-**Why enable `checkJs` in the JS template?**
+---
 
-It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
+## Future Enhancements
 
-**Why is HMR not preserving my local component state?**
+- **Authentication**: Add user login and registration.
+- **Persistent Storage**: Integrate a database for saving portfolio data.
+- **Real-Time Updates**: Fetch live market data.
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/sveltejs/svelte-hmr/tree/master/packages/svelte-hmr#preservation-of-local-state).
+---
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+## How to Run the Project Locally
+If you'd like to see this project in action, please follow the steps below to run it locally on your machine:
 
-```js
-// store.js
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+### 1. **Clone the Repository**
+First, clone the repository with: 
+
+```git clone https://github.com/DaniellaToth05/ePortfolio2430.git```
+
+Then, navigate into the project directory:
+```cd ePortfolio2430/backend/demo```
+
+### 2. **Build the Backend with Maven**
+```./mvnw clean package -DskipTests```
+
+### 3. ** Run the Spring Boot Application**
+Start the development server with the following command:
+```java -jar target/demo-0.0.1-SNAPSHOT.jar```
+
+### 4. **View the Project**
+Once the server is running, open your browser and go to
+
+```http://localhost:8080```
+
+You should see the **ePortfolio** dashboard, which allows you to interact with the project’s functionalities.
+
+### 5. **Stop the Server**
+When you're finished, stop the development server by pressing
+```Ctrl + C```
+
+---
+
+## 📁 Project Structure
+
+```bash
+ePortfolio2430/
+├── static/                 # Frontend assets (HTML, CSS, JS)
+├── src/main/java/          # Spring Boot controllers and logic
+├── Dockerfile              # Docker setup
+├── pom.xml                 # Maven project config
+└── README.md
 ```
+---
+
+Thank you for taking the time to view my project!
+
+---
+
+## Author
+
+**Daniella Toth**  
+*Software Engineering Student at University of Guelph*  
+**Connect with Me**
+*[LinkedIn](https://www.linkedin.com/in/daniella-toth-x03/)*
+
