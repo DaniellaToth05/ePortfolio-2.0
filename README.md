@@ -14,6 +14,15 @@ This project was originally developed as a Java Swing application for a universi
 
 The frontend communicates directly with the deployed backend API.
 
+## Deployment Notes
+
+The backend API is deployed on Render using the free tier, which may enter a sleep state after periods of inactivity.
+
+To ensure a smooth user experience, the frontend automatically sends a lightweight request to the backend when the application loads. This wakes the server before any portfolio data is fetched. While the backend is starting, a themed loading screen is displayed to indicate progress.
+
+Once the backend is awake, all portfolio data loads normally and subsequent interactions are responsive.
+
+
 ## Features
 
 - Buy and sell stock and mutual fund investments  
