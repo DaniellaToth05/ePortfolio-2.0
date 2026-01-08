@@ -1,4 +1,4 @@
-package com.yourpackage.eportfolio.controller;
+package com.daniella.eportfolio.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
