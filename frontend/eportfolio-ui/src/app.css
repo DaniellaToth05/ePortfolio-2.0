@@ -170,8 +170,6 @@ body {
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
-
-/* Portfolio Card */
 .portfolio-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 247, 244, 0.9) 100%);
   backdrop-filter: blur(40px);
@@ -1205,3 +1203,83 @@ body {
 .portfolio-card {
   overflow: visible;
 }
+
+
+
+
+<style>
+  .loading-screen {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .loading-card {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(249, 247, 244, 0.9)
+    );
+    backdrop-filter: blur(40px);
+    border-radius: 22px;
+    padding: 48px 56px;
+    text-align: center;
+    border: 1px solid rgba(156, 175, 136, 0.18);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.05),
+      0 8px 16px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* subtle top accent line (matches cards) */
+  .loading-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--sage-primary),
+      var(--eucalyptus),
+      var(--olive-muted)
+    );
+  }
+
+  .loading-ring {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 26px;
+    border-radius: 50%;
+    border: 2px solid rgba(156, 175, 136, 0.25);
+    border-top-color: var(--sage-primary);
+    animation: calm-spin 1.2s linear infinite;
+  }
+
+  .loading-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--warm-grey);
+    margin-bottom: 10px;
+    letter-spacing: 0.4px;
+  }
+
+  .loading-subtitle {
+    font-size: 13px;
+    color: var(--soft-grey);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  @keyframes calm-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
