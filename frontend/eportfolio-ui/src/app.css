@@ -1204,10 +1204,6 @@ body {
   overflow: visible;
 }
 
-
-
-
-<style>
   .loading-screen {
     min-height: 70vh;
     display: flex;
@@ -1234,7 +1230,6 @@ body {
     overflow: hidden;
   }
 
-  /* subtle top accent line (matches cards) */
   .loading-card::before {
     content: '';
     position: absolute;
@@ -1282,4 +1277,3 @@ body {
       transform: rotate(360deg);
     }
   }
-</style>
