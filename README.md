@@ -4,6 +4,16 @@ ePortfolio is an investment management web application that allows users to mana
 
 This project was originally developed as a Java Swing application for a university assignment and later rebuilt as a full-stack web application to improve usability and extend functionality.
 
+## Live Demo
+
+- Frontend (Netlify):  
+  https://eportfolio-2.netlify.app/
+
+- Backend API (Render):  
+  https://eportfolio-3b6q.onrender.com/
+
+The frontend communicates directly with the deployed backend API.
+
 ## Features
 
 - Buy and sell stock and mutual fund investments  
